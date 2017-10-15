@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using SportsStore.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SportsStore {
   public class Startup {
@@ -18,21 +20,18 @@ namespace SportsStore {
 
 
     public void ConfigureServices(IServiceCollection services) {
-      services.AddMvc();
+            // add db context service 
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration["Data:Products:ConnectionString"]));
+            services.AddMvc();
     }
 
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env, DataContext context) {
 
       app.UseDeveloperExceptionPage();
       app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
           HotModuleReplacement = true
       });
 
-      //if (env.IsDevelopment()) {
-      //  app.UseDeveloperExceptionPage();
-      //} else {
-      //  app.UseExceptionHandler("/Home/Error");
-      //}
 
       app.UseStaticFiles();
 
@@ -41,6 +40,8 @@ namespace SportsStore {
             name: "default",
             template: "{controller=Home}/{action=Index}/{id?}");
       });
+            //seed the database
+            SeedData.SeedDatabase(context);
     }
   }
 }
