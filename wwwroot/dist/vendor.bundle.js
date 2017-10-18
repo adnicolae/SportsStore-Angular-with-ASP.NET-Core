@@ -53344,18 +53344,18 @@ ReactiveFormsModule.ctorParameters = function () { return []; };
 /* unused harmony export BaseResponseOptions */
 /* unused harmony export ResponseOptions */
 /* unused harmony export ReadyState */
-/* unused harmony export RequestMethod */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return RequestMethod; });
 /* unused harmony export ResponseContentType */
 /* unused harmony export ResponseType */
 /* unused harmony export Headers */
-/* unused harmony export Http */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Http; });
 /* unused harmony export Jsonp */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HttpModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return HttpModule; });
 /* unused harmony export JsonpModule */
 /* unused harmony export Connection */
 /* unused harmony export ConnectionBackend */
 /* unused harmony export XSRFStrategy */
-/* unused harmony export Request */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Request; });
 /* unused harmony export Response */
 /* unused harmony export QueryEncoder */
 /* unused harmony export URLSearchParams */
@@ -61363,6 +61363,18 @@ function flattenUnsubscriptionErrors(errors) {
     return errors.reduce(function (errs, err) { return errs.concat((err instanceof UnsubscriptionError_1.UnsubscriptionError) ? err.errors : err); }, []);
 }
 //# sourceMappingURL=Subscription.js.map
+
+/***/ }),
+
+/***/ "./node_modules/rxjs/add/operator/map.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Observable_1 = __webpack_require__("./node_modules/rxjs/Observable.js");
+var map_1 = __webpack_require__("./node_modules/rxjs/operator/map.js");
+Observable_1.Observable.prototype.map = map_1.map;
+//# sourceMappingURL=map.js.map
 
 /***/ }),
 
