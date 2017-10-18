@@ -138,6 +138,27 @@ AppModule = __decorate([
 
 /***/ }),
 
+/***/ "./ClientApp/app/models/configClasses.repository.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Filter; });
+// class used to specify filtering that will be applied to product data
+var Filter = (function () {
+    function Filter() {
+        this.related = false;
+    }
+    Filter.prototype.reset = function () {
+        this.category = this.search = null;
+        this.related = false;
+    };
+    return Filter;
+}());
+
+//# sourceMappingURL=configClasses.repository.js.map
+
+/***/ }),
+
 /***/ "./ClientApp/app/models/model.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -180,6 +201,7 @@ ModelModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("./node_modules/rxjs/add/operator/map.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__configClasses_repository__ = __webpack_require__("./ClientApp/app/models/configClasses.repository.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -192,12 +214,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var productsUrl = "/api/products";
 var Repository = (function () {
     // http class provides methods for making http requests
     function Repository(http) {
         this.http = http;
-        this.getProducts(true);
+        this.filterObject = new __WEBPACK_IMPORTED_MODULE_3__configClasses_repository__["a" /* Filter */]();
+        this.filter.category = "soccer";
+        this.filter.related = true;
+        this.getProducts();
     }
     // sends the request and assigns productData with the data from the response
     Repository.prototype.getProduct = function (id) {
@@ -208,9 +234,23 @@ var Repository = (function () {
     Repository.prototype.getProducts = function (related) {
         var _this = this;
         if (related === void 0) { related = false; }
-        this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestMethod */].Get, productsUrl + "?related=" + related)
+        var url = productsUrl + "?related=" + this.filter.related;
+        if (this.filter.category) {
+            url += "&category=" + this.filter.category;
+        }
+        if (this.filter.search) {
+            url += "&search=" + this.filter.search;
+        }
+        this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestMethod */].Get, url)
             .subscribe(function (response) { return _this.products = response; });
     };
+    Object.defineProperty(Repository.prototype, "filter", {
+        get: function () {
+            return this.filterObject;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // http.request is an Observable<Response> which will produce a Response when the request is complete
     // the map method allows the observable to be transformed by parsing JSON from the HTTP reponse
     Repository.prototype.sendRequest = function (verb, url, data) {

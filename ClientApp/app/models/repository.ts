@@ -3,17 +3,21 @@ import { Injectable } from "@angular/core";
 import { Http, RequestMethod, Request, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
+import { Filter } from "./configClasses.repository";
 
 const productsUrl = "/api/products";
 
 @Injectable()
 export class Repository {
+    private filterObject = new Filter();
     product: Product;
     products: Product[];
 
     // http class provides methods for making http requests
     constructor(private http: Http) {
-        this.getProducts(true);
+        this.filter.category = "soccer";
+        this.filter.related = true;
+        this.getProducts();
     }
 
     // sends the request and assigns productData with the data from the response
@@ -23,8 +27,22 @@ export class Repository {
     }
 
     getProducts(related = false) {
-        this.sendRequest(RequestMethod.Get, productsUrl + "?related=" + related)
+        let url = productsUrl + "?related=" + this.filter.related;
+
+        if (this.filter.category) {
+            url += "&category=" + this.filter.category;
+        }
+
+        if (this.filter.search) {
+            url += "&search=" + this.filter.search;
+        }
+
+        this.sendRequest(RequestMethod.Get, url)
             .subscribe(response => this.products = response);
+    }
+
+    get filter(): Filter {
+        return this.filterObject;
     }
 
     // http.request is an Observable<Response> which will produce a Response when the request is complete

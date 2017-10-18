@@ -12,12 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
+var configClasses_repository_1 = require("./configClasses.repository");
 var productsUrl = "/api/products";
 var Repository = (function () {
     // http class provides methods for making http requests
     function Repository(http) {
         this.http = http;
-        this.getProducts(true);
+        this.filterObject = new configClasses_repository_1.Filter();
+        this.filter.category = "soccer";
+        this.filter.related = true;
+        this.getProducts();
     }
     // sends the request and assigns productData with the data from the response
     Repository.prototype.getProduct = function (id) {
@@ -28,9 +32,23 @@ var Repository = (function () {
     Repository.prototype.getProducts = function (related) {
         var _this = this;
         if (related === void 0) { related = false; }
-        this.sendRequest(http_1.RequestMethod.Get, productsUrl + "?related=" + related)
+        var url = productsUrl + "?related=" + this.filter.related;
+        if (this.filter.category) {
+            url += "&category=" + this.filter.category;
+        }
+        if (this.filter.search) {
+            url += "&search=" + this.filter.search;
+        }
+        this.sendRequest(http_1.RequestMethod.Get, url)
             .subscribe(function (response) { return _this.products = response; });
     };
+    Object.defineProperty(Repository.prototype, "filter", {
+        get: function () {
+            return this.filterObject;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // http.request is an Observable<Response> which will produce a Response when the request is complete
     // the map method allows the observable to be transformed by parsing JSON from the HTTP reponse
     Repository.prototype.sendRequest = function (verb, url, data) {
