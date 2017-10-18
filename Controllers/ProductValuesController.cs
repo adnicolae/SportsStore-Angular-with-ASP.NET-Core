@@ -33,9 +33,15 @@ namespace SportsStore.Controllers
             {
                 if (result.Supplier != null)
                 {
-                    result.Supplier.Products = result.Supplier.Products.Select(p => new Product { ProductId = p.ProductId, Name = p.Name, Category = p.Category, Description = p.Description, Price = p.Price;
+                    result.Supplier.Products = result.Supplier.Products.Select(p => new Product
+                    {
+                        ProductId = p.ProductId,
+                        Name = p.Name,
+                        Category = p.Category,
+                        Description = p.Description,
+                        Price = p.Price
+                    });
                 }
-
                 if (result.Ratings != null)
                 {
                     foreach (Rating r in result.Ratings)

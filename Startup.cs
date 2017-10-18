@@ -22,7 +22,7 @@ namespace SportsStore {
     public void ConfigureServices(IServiceCollection services) {
             // add db context service 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration["Data:Products:ConnectionString"]));
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize; options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore; });
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env, DataContext context) {
