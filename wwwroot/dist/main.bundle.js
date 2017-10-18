@@ -34,7 +34,7 @@ module.exports = module.exports.toString();
 /***/ "./ClientApp/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-sm table-striped\">\r\n    <tr><th>Name</th><td>{{product?.name}}</td></tr>\r\n    <tr><th>Category</th><td>{{product?.category}}</td></tr>\r\n    <tr><th>Description</th><td>{{product?.description}}</td></tr>\r\n    <tr><th>Price</th><td>{{product?.price}}</td></tr>\r\n</table>\r\n"
+module.exports = "<table class=\"table table-sm table-striped\">\r\n    <tr><th>Name</th><td>{{product?.name || \"Loading Data...\"}}</td></tr>\r\n    <tr><th>Category</th><td>{{product?.category || \"Loading Data...\"}}</td></tr>\r\n    <tr><th>Description</th><td>{{product?.description || \"Loading Data...\" }}</td></tr>\r\n    <tr><th>Price</th><td>{{product?.price || \"Loading Data...\"}}</td></tr>\r\n</table>\r\n"
 
 /***/ }),
 
