@@ -6,28 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
-var forms_1 = require("@angular/forms");
-var http_1 = require("@angular/http");
-var model_module_1 = require("./models/model.module");
-var app_component_1 = require("./app.component");
-var AppModule = (function () {
-    function AppModule() {
+var repository_1 = require("./repository");
+// Decorator - provides Angular with metadata about the Repository building block
+// begins with @ followed by the decorator type and configuration properties
+// specify the required services
+var ModelModule = (function () {
+    function ModelModule() {
     }
-    return AppModule;
+    return ModelModule;
 }());
-AppModule = __decorate([
+ModelModule = __decorate([
     core_1.NgModule({
-        declarations: [
-            app_component_1.AppComponent
-        ],
-        imports: [
-            platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, model_module_1.ModelModule
-        ],
-        providers: [],
-        bootstrap: [app_component_1.AppComponent]
+        providers: [repository_1.Repository]
     })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+], ModelModule);
+exports.ModelModule = ModelModule;
+//# sourceMappingURL=model.module.js.map

@@ -32,7 +32,6 @@ namespace SportsStore {
           HotModuleReplacement = true
       });
 
-
       app.UseStaticFiles();
 
       app.UseMvc(routes => {

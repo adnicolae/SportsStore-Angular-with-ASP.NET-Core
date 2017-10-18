@@ -14,7 +14,7 @@ namespace SportsStore.Controllers {
 
         public IActionResult Index() {
             ViewBag.Message = "Sports Store App";
-            var model = _context.Products.First();
+            var model = _context.Products.FirstOrDefault();
             return View(model);
         }
     }
