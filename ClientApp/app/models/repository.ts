@@ -8,17 +8,23 @@ const productsUrl = "/api/products";
 
 @Injectable()
 export class Repository {
-    private productData: Product;
+    product: Product;
+    products: Product[];
 
     // http class provides methods for making http requests
     constructor(private http: Http) {
-        this.getProduct(1);
+        this.getProducts(true);
     }
 
     // sends the request and assigns productData with the data from the response
     getProduct(id: number) {
         this.sendRequest(RequestMethod.Get, productsUrl + "/" + id)
-            .subscribe(response => { this.productData = response; });
+            .subscribe(response => { this.product = response.json(); });
+    }
+
+    getProducts(related = false) {
+        this.sendRequest(RequestMethod.Get, productsUrl + "?related=" + related)
+            .subscribe(response => this.products = response);
     }
 
     // http.request is an Observable<Response> which will produce a Response when the request is complete
@@ -29,10 +35,5 @@ export class Repository {
             url: url,
             body: data
         })).map(response => response.json());
-    }
-
-    get product(): Product {
-        console.log("Product Data Requested");
-        return this.productData;
     }
 }

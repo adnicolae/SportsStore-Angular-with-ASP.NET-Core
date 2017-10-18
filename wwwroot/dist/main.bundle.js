@@ -34,7 +34,7 @@ module.exports = module.exports.toString();
 /***/ "./ClientApp/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-sm table-striped\">\r\n    <tr><th>Name</th><td>{{product?.name || \"Loading Data...\"}}</td></tr>\r\n    <tr><th>Category</th><td>{{product?.category || \"Loading Data...\"}}</td></tr>\r\n    <tr><th>Description</th><td>{{product?.description || \"Loading Data...\" }}</td></tr>\r\n    <tr><th>Price</th><td>{{product?.price || \"Loading Data...\"}}</td></tr>\r\n</table>\r\n"
+module.exports = "<table class=\"table table-sm table-striped\">\r\n    <tr>\r\n        <th>Name</th>\r\n        <th>Category</th>\r\n        <th>Price</th>\r\n        <th>Supplier</th>\r\n        <th>Ratings</th>\r\n    </tr>\r\n    <tr *ngFor=\"let product of products\">\r\n        <td>{{product.name}}</td>\r\n        <td>{{product.category}}</td>\r\n        <td>{{product.price}}</td>\r\n        <td>{{product.supplier?.name || 'None'}}</td>\r\n        <td>{{product.ratings?.length || 0}}</td>\r\n    </tr>\r\n</table>"
 
 /***/ }),
 
@@ -66,6 +66,13 @@ var AppComponent = (function () {
         // the keyword 'this' is necessary
         get: function () {
             return this.repo.product;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AppComponent.prototype, "products", {
+        get: function () {
+            return this.repo.products;
         },
         enumerable: true,
         configurable: true
@@ -190,13 +197,19 @@ var Repository = (function () {
     // http class provides methods for making http requests
     function Repository(http) {
         this.http = http;
-        this.getProduct(1);
+        this.getProducts(true);
     }
     // sends the request and assigns productData with the data from the response
     Repository.prototype.getProduct = function (id) {
         var _this = this;
         this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestMethod */].Get, productsUrl + "/" + id)
-            .subscribe(function (response) { _this.productData = response; });
+            .subscribe(function (response) { _this.product = response.json(); });
+    };
+    Repository.prototype.getProducts = function (related) {
+        var _this = this;
+        if (related === void 0) { related = false; }
+        this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestMethod */].Get, productsUrl + "?related=" + related)
+            .subscribe(function (response) { return _this.products = response; });
     };
     // http.request is an Observable<Response> which will produce a Response when the request is complete
     // the map method allows the observable to be transformed by parsing JSON from the HTTP reponse
@@ -207,14 +220,6 @@ var Repository = (function () {
             body: data
         })).map(function (response) { return response.json(); });
     };
-    Object.defineProperty(Repository.prototype, "product", {
-        get: function () {
-            console.log("Product Data Requested");
-            return this.productData;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return Repository;
 }());
 Repository = __decorate([

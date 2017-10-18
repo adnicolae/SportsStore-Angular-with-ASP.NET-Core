@@ -17,13 +17,19 @@ var Repository = (function () {
     // http class provides methods for making http requests
     function Repository(http) {
         this.http = http;
-        this.getProduct(1);
+        this.getProducts(true);
     }
     // sends the request and assigns productData with the data from the response
     Repository.prototype.getProduct = function (id) {
         var _this = this;
         this.sendRequest(http_1.RequestMethod.Get, productsUrl + "/" + id)
-            .subscribe(function (response) { _this.productData = response; });
+            .subscribe(function (response) { _this.product = response.json(); });
+    };
+    Repository.prototype.getProducts = function (related) {
+        var _this = this;
+        if (related === void 0) { related = false; }
+        this.sendRequest(http_1.RequestMethod.Get, productsUrl + "?related=" + related)
+            .subscribe(function (response) { return _this.products = response; });
     };
     // http.request is an Observable<Response> which will produce a Response when the request is complete
     // the map method allows the observable to be transformed by parsing JSON from the HTTP reponse
@@ -34,14 +40,6 @@ var Repository = (function () {
             body: data
         })).map(function (response) { return response.json(); });
     };
-    Object.defineProperty(Repository.prototype, "product", {
-        get: function () {
-            console.log("Product Data Requested");
-            return this.productData;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return Repository;
 }());
 Repository = __decorate([

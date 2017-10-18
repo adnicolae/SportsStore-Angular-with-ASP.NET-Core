@@ -53,5 +53,45 @@ namespace SportsStore.Controllers
 
             return result;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="related">indicate whether related data should be included in the response, which defaults to false</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<Product> GetProducts(bool related = false)
+        {
+            IQueryable<Product> query = _context.Products;
+
+            // ToList forces execution of the query and ForEach is used to break circular dependencies
+            if (related)
+            {
+                query = query
+                    .Include(p => p.Supplier)
+                    .Include(p => p.Ratings);
+
+                List<Product> data = query.ToList();
+
+                data.ForEach(p =>
+                {
+                    if (p.Supplier != null)
+                    {
+                        p.Supplier.Products = null;
+                    }
+
+                    if (p.Ratings != null)
+                    {
+                        p.Ratings
+                        .ForEach(r => r.Product = null);
+                    }
+                });
+                return data;
+            }
+            else
+            {
+                return query;
+            }
+        }
     }
 }

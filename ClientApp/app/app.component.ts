@@ -18,5 +18,8 @@ export class AppComponent {
         return this.repo.product;
     }
 
+    get products(): Product[] {
+        return this.repo.products;
+    }
     //title = no_such_object;
 }
