@@ -7,6 +7,7 @@ export class Product {
         public name?: string,
         public category?: string,
         public price?: number,
+        public description?: string,
         public supplier?: Supplier,
         public ratings?: Rating[]
     ) {}
