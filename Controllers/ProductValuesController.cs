@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 using Microsoft.EntityFrameworkCore;
+using SportsStore.Models.BindingTargets;
 
 namespace SportsStore.Controllers
 {
@@ -105,6 +106,32 @@ namespace SportsStore.Controllers
             else
             {
                 return query;
+            }
+        }
+
+        /// <summary>
+        /// FromBody tells the model binder to get the data values from the request body
+        /// </summary>
+        /// <param name="productData"></param>
+        /// <returns>IActionResult allows data validation against the binder annotations, returns 400 if it doesn't validate</returns>
+        [HttpPost]
+        public IActionResult CreateProduct([FromBody] ProductData productData)
+        {
+            if (ModelState.IsValid)
+            {
+                Product p = productData.Product;
+
+                if (p.Supplier != null && p.Supplier.SupplierId != 0)
+                {
+                    _context.Attach(p.Supplier);
+                }
+                _context.Add(p);
+                _context.SaveChanges();
+                return Ok(p.ProductId);
+            }
+            else
+            {
+                return BadRequest(ModelState);
             }
         }
     }
