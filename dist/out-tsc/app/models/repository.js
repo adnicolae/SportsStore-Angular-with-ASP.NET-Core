@@ -23,13 +23,14 @@ var Repository = (function () {
         this.suppliers = [];
         //this.filter.category = "soccer";
         this.filter.related = true;
+        this.getProduct(1);
         this.getProducts();
     }
     // sends the request and assigns productData with the data from the response
     Repository.prototype.getProduct = function (id) {
         var _this = this;
         this.sendRequest(http_1.RequestMethod.Get, productsUrl + "/" + id)
-            .subscribe(function (response) { _this.product = response.json(); });
+            .subscribe(function (response) { _this.product = response; });
     };
     Repository.prototype.getProducts = function (related) {
         var _this = this;
