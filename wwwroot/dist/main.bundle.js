@@ -34,7 +34,7 @@ module.exports = module.exports.toString();
 /***/ "./ClientApp/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<category-filter></category-filter>\r\n<product-table></product-table>"
+module.exports = "<div class=\"container\">\r\n    <div class=\"row\">\r\n        <div class=\"col\">\r\n            <category-filter></category-filter>\r\n            <product-table></product-table>\r\n        </div>\r\n        <div class=\"col\">\r\n            <product-detail></product-detail>\r\n        </div>\r\n    </div>\r\n</div> "
 
 /***/ }),
 
@@ -118,12 +118,14 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__("./ClientApp/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__structure_productTable_component__ = __webpack_require__("./ClientApp/app/structure/productTable.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__structure_categoryFilter_component__ = __webpack_require__("./ClientApp/app/structure/categoryFilter.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__structure_productDetail_component__ = __webpack_require__("./ClientApp/app/structure/productDetail.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -142,7 +144,8 @@ AppModule = __decorate([
         declarations: [
             __WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_6__structure_productTable_component__["a" /* ProductTableComponent */],
-            __WEBPACK_IMPORTED_MODULE_7__structure_categoryFilter_component__["a" /* CategoryFilterComponent */]
+            __WEBPACK_IMPORTED_MODULE_7__structure_categoryFilter_component__["a" /* CategoryFilterComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__structure_productDetail_component__["a" /* ProductDetailComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */], __WEBPACK_IMPORTED_MODULE_3__angular_http__["b" /* HttpModule */], __WEBPACK_IMPORTED_MODULE_4__models_model_module__["a" /* ModelModule */]
@@ -265,13 +268,14 @@ var Repository = (function () {
         this.suppliers = [];
         //this.filter.category = "soccer";
         this.filter.related = true;
+        this.getProduct(1);
         this.getProducts();
     }
     // sends the request and assigns productData with the data from the response
     Repository.prototype.getProduct = function (id) {
         var _this = this;
         this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestMethod */].Get, productsUrl + "/" + id)
-            .subscribe(function (response) { _this.product = response.json(); });
+            .subscribe(function (response) { _this.product = response; });
     };
     Repository.prototype.getProducts = function (related) {
         var _this = this;
@@ -419,10 +423,61 @@ var _a;
 
 /***/ }),
 
+/***/ "./ClientApp/app/structure/productDetail.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<table class=\"table table-striped\">\r\n    <tr><th colspan=\"2\" class=\"bg-info\">Product</th></tr>\r\n    <tr>\r\n        <th>Name</th>\r\n        <td>{{product?.name || 'No Data'}}</td>\r\n    </tr>\r\n    <tr>\r\n        <th>Category</th>\r\n        <td>{{product?.category || 'No Data'}}</td>\r\n    </tr>\r\n    <tr>\r\n        <th>Description</th>\r\n        <td>{{product?.description || 'No Data'}}</td>\r\n    </tr>\r\n    <tr>\r\n        <th>Price</th>\r\n        <td>{{product?.price  || 'No Data'}}</td>\r\n    </tr>\r\n    <tr>\r\n        <th colspan=\"2\" class=\"bg-info\">Supplier</th>\r\n    </tr>\r\n    <tr>\r\n        <th>Name</th>\r\n        <td>{{product?.supplier?.name}}</td>\r\n    </tr>\r\n    <tr>\r\n        <th>City</th>\r\n        <td>{{product?.supplier?.city}}</td>\r\n    </tr>\r\n    <tr>\r\n        <th>State</th>\r\n        <td>{{product?.supplier?.state}}</td>\r\n    </tr>\r\n    <tr>\r\n        <th>Products</th>\r\n        <td>{{product?.supplier?.products?.length}}</td>\r\n    </tr>\r\n</table>"
+
+/***/ }),
+
+/***/ "./ClientApp/app/structure/productDetail.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProductDetailComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_repository__ = __webpack_require__("./ClientApp/app/models/repository.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ProductDetailComponent = (function () {
+    function ProductDetailComponent(repo) {
+        this.repo = repo;
+    }
+    Object.defineProperty(ProductDetailComponent.prototype, "product", {
+        get: function () {
+            return this.repo.product;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ProductDetailComponent;
+}());
+ProductDetailComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+        selector: "product-detail",
+        template: __webpack_require__("./ClientApp/app/structure/productDetail.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object])
+], ProductDetailComponent);
+
+var _a;
+//# sourceMappingURL=productDetail.component.js.map
+
+/***/ }),
+
 /***/ "./ClientApp/app/structure/productTable.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-striped\">\r\n    <tr><th>Name</th><th>Category</th><th>Price</th></tr>\r\n    <tr *ngFor=\"let product of products\">\r\n        <td>{{product.name}}</td>\r\n        <td>{{product.category}}</td>\r\n        <td>{{product.price}}</td>\r\n    </tr>\r\n</table>"
+module.exports = "<table class=\"table table-striped\">\r\n    <tr><th>Name</th><th>Category</th><th>Price</th><th></th></tr>\r\n    <tr *ngFor=\"let product of products\">\r\n        <td>{{product.name}}</td>\r\n        <td>{{product.category}}</td>\r\n        <td>{{product.price}}</td>\r\n        <td>\r\n            <button class=\"btn btn-primary btn-sm\"\r\n                                        (click)=\"selectProduct(product.productId)\">\r\n                Details\r\n            </button>\r\n        </td> \r\n    </tr>\r\n</table>"
 
 /***/ }),
 
@@ -455,6 +510,9 @@ var ProductTableComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    ProductTableComponent.prototype.selectProduct = function (id) {
+        this.repo.getProduct(id);
+    };
     return ProductTableComponent;
 }());
 ProductTableComponent = __decorate([

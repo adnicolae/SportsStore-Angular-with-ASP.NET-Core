@@ -20,13 +20,14 @@ export class Repository {
     constructor(private http: Http) {
         //this.filter.category = "soccer";
         this.filter.related = true;
+        this.getProduct(1);
         this.getProducts();
     }
 
     // sends the request and assigns productData with the data from the response
     getProduct(id: number) {
         this.sendRequest(RequestMethod.Get, productsUrl + "/" + id)
-            .subscribe(response => { this.product = response.json(); });
+            .subscribe(response => { this.product = response; });
     }
 
     getProducts(related = false) {
