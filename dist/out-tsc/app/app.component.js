@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var repository_1 = require("./models/repository");
+var product_model_1 = require("./models/product.model");
+var supplier_model_1 = require("./models/supplier.model");
 var AppComponent = (function () {
     // this will create a property with the same name, type and access which will be of type Repository which by default is populated with the JSON data from the Index view
     function AppComponent(repo) {
@@ -32,6 +34,14 @@ var AppComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    AppComponent.prototype.createProduct = function () {
+        this.repo.createProduct(new product_model_1.Product(0, "X-Ray Scuba Mask", "Watersports", 49.99, "See what the fish are hiding", this.repo.products[0].supplier));
+    };
+    AppComponent.prototype.createProductAndSupplier = function () {
+        var s = new supplier_model_1.Supplier(0, "Rocket Shoe Corp", "Boston", "MA");
+        var p = new product_model_1.Product(0, "Rocket-Powered Shoes", "Running", 100, "Set a new record", s);
+        this.repo.createProductAndSupplier(p, s);
+    };
     return AppComponent;
 }());
 AppComponent = __decorate([

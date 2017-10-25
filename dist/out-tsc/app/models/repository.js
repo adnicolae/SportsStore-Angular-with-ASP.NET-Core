@@ -14,12 +14,14 @@ var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var configClasses_repository_1 = require("./configClasses.repository");
 var productsUrl = "/api/products";
+var suppliersUrl = "/api/suppliers";
 var Repository = (function () {
     // http class provides methods for making http requests
     function Repository(http) {
         this.http = http;
         this.filterObject = new configClasses_repository_1.Filter();
-        this.filter.category = "soccer";
+        this.suppliers = [];
+        //this.filter.category = "soccer";
         this.filter.related = true;
         this.getProducts();
     }
@@ -41,6 +43,43 @@ var Repository = (function () {
         }
         this.sendRequest(http_1.RequestMethod.Get, url)
             .subscribe(function (response) { return _this.products = response; });
+    };
+    Repository.prototype.getSuppliers = function () {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, suppliersUrl)
+            .subscribe(function (response) { return _this.suppliers = response; });
+    };
+    Repository.prototype.createProduct = function (prod) {
+        var _this = this;
+        var data = {
+            name: prod.name,
+            category: prod.category,
+            description: prod.description,
+            price: prod.price,
+            supplier: prod.supplier ? prod.supplier.supplierId : 0
+        };
+        this.sendRequest(http_1.RequestMethod.Post, productsUrl, data)
+            .subscribe(function (response) {
+            prod.productId = response;
+            _this.products.push(prod);
+        });
+    };
+    Repository.prototype.createProductAndSupplier = function (prod, supp) {
+        var _this = this;
+        var data = {
+            name: supp.name,
+            city: supp.city,
+            state: supp.state
+        };
+        this.sendRequest(http_1.RequestMethod.Post, suppliersUrl, data)
+            .subscribe(function (response) {
+            supp.supplierId = response;
+            prod.supplier = supp;
+            _this.suppliers.push(supp);
+            if (prod != null) {
+                _this.createProduct(prod);
+            }
+        });
     };
     Object.defineProperty(Repository.prototype, "filter", {
         get: function () {

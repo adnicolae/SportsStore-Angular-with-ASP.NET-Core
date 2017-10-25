@@ -10,6 +10,7 @@
     <None Remove="ClientApp\app\models\rating.model.ts" />
     <None Remove="ClientApp\app\models\repository.ts" />
     <None Remove="ClientApp\app\models\supplier.model.ts" />
+    <None Remove="ClientApp\app\structure\categoryFilter.component.ts" />
     <None Remove="ClientApp\boot.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +29,7 @@
     <TypeScriptCompile Include="ClientApp\app\models\rating.model.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\repository.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\supplier.model.ts" />
+    <TypeScriptCompile Include="ClientApp\app\structure\categoryFilter.component.ts" />
     <TypeScriptCompile Include="ClientApp\boot.ts" />
   </ItemGroup>
 </Project>
